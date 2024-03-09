@@ -4994,3 +4994,60 @@
 26-Feb-24 14:52:31 - [INFO] - New account created
 26-Feb-24 14:52:31 - [INFO] - 200 - Account created successfully. Now please login.
 26-Feb-24 14:52:31 - [INFO] - 127.0.0.1 - - [26/Feb/2024 14:52:31] "POST /api/v1/auth/register HTTP/1.1" 200 -
+07-Mar-24 21:19:56 - [INFO] - Development environment configured.
+07-Mar-24 21:19:57 - [INFO] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+07-Mar-24 21:19:57 - [INFO] - [33mPress CTRL+C to quit[0m
+07-Mar-24 21:19:57 - [INFO] -  * Restarting with stat
+07-Mar-24 21:20:04 - [INFO] - Development environment configured.
+07-Mar-24 21:20:04 - [WARNING] -  * Debugger is active!
+07-Mar-24 21:20:05 - [INFO] -  * Debugger PIN: 144-461-662
+07-Mar-24 22:17:44 - [INFO] - 127.0.0.1 - - [07/Mar/2024 22:17:44] "OPTIONS /api/v1/auth/register HTTP/1.1" 200 -
+07-Mar-24 22:17:45 - [INFO] - New account created
+07-Mar-24 22:17:45 - [INFO] - 200 - Account created successfully. Now please login.
+07-Mar-24 22:17:45 - [INFO] - 127.0.0.1 - - [07/Mar/2024 22:17:45] "POST /api/v1/auth/register HTTP/1.1" 200 -
+07-Mar-24 22:18:08 - [INFO] - 127.0.0.1 - - [07/Mar/2024 22:18:08] "OPTIONS /api/v1/auth/login HTTP/1.1" 200 -
+07-Mar-24 22:18:08 - [INFO] - User logged in.
+07-Mar-24 22:18:08 - [INFO] - 200 - Custom success 200 response sent
+07-Mar-24 22:18:08 - [INFO] - 127.0.0.1 - - [07/Mar/2024 22:18:08] "POST /api/v1/auth/login HTTP/1.1" 200 -
+07-Mar-24 22:18:08 - [INFO] - 127.0.0.1 - - [07/Mar/2024 22:18:08] "OPTIONS /api/v1/admin/5b37040e6200edb3c7f409e994076872 HTTP/1.1" 200 -
+07-Mar-24 22:18:08 - [INFO] - Token is verified for the user: 5b37040e6200edb3c7f409e994076872
+07-Mar-24 22:18:08 - [INFO] - User role : admin : is verified for the user: 5b37040e6200edb3c7f409e994076872
+07-Mar-24 22:18:08 - [INFO] - File path is not valid: 
+07-Mar-24 22:18:08 - [INFO] - 200 - Custom success 200 response sent
+07-Mar-24 22:18:08 - [INFO] - 127.0.0.1 - - [07/Mar/2024 22:18:08] "GET /api/v1/admin/5b37040e6200edb3c7f409e994076872 HTTP/1.1" 200 -
+07-Mar-24 22:18:13 - [INFO] - 127.0.0.1 - - [07/Mar/2024 22:18:13] "OPTIONS /api/v1/auth/newUsers HTTP/1.1" 200 -
+07-Mar-24 22:18:13 - [INFO] - Token is verified for the user: 5b37040e6200edb3c7f409e994076872
+07-Mar-24 22:18:13 - [INFO] - Admin role is verified for the user: 5b37040e6200edb3c7f409e994076872
+07-Mar-24 22:18:13 - [INFO] - 200 - Custom success 200 response sent
+07-Mar-24 22:18:13 - [INFO] - 127.0.0.1 - - [07/Mar/2024 22:18:13] "GET /api/v1/auth/newUsers HTTP/1.1" 200 -
+07-Mar-24 22:18:20 - [INFO] - 127.0.0.1 - - [07/Mar/2024 22:18:20] "OPTIONS /api/v1/auth/newUsers/06710f3300c1d08019959f78c14afa0d HTTP/1.1" 200 -
+07-Mar-24 22:18:20 - [INFO] - Token is verified for the user: 5b37040e6200edb3c7f409e994076872
+07-Mar-24 22:18:20 - [INFO] - Admin role is verified for the user: 5b37040e6200edb3c7f409e994076872
+07-Mar-24 22:18:20 - [INFO] - 200 - User verified and updated in database.
+07-Mar-24 22:18:20 - [INFO] - 127.0.0.1 - - [07/Mar/2024 22:18:20] "PUT /api/v1/auth/newUsers/06710f3300c1d08019959f78c14afa0d HTTP/1.1" 200 -
+07-Mar-24 22:18:22 - [INFO] - 127.0.0.1 - - [07/Mar/2024 22:18:22] "OPTIONS /api/v1/auth/newUsers/b21c63f8cf21ca959a10cdbbe7c38b87 HTTP/1.1" 200 -
+07-Mar-24 22:18:22 - [INFO] - Token is verified for the user: 5b37040e6200edb3c7f409e994076872
+07-Mar-24 22:18:22 - [INFO] - Admin role is verified for the user: 5b37040e6200edb3c7f409e994076872
+07-Mar-24 22:18:22 - [INFO] - 200 - Verification failed so user deleted in database.
+07-Mar-24 22:18:22 - [INFO] - 127.0.0.1 - - [07/Mar/2024 22:18:22] "DELETE /api/v1/auth/newUsers/b21c63f8cf21ca959a10cdbbe7c38b87 HTTP/1.1" 200 -
+07-Mar-24 22:25:41 - [INFO] - 127.0.0.1 - - [07/Mar/2024 22:25:41] "OPTIONS /api/v1/auth/login HTTP/1.1" 200 -
+07-Mar-24 22:25:41 - [INFO] - User logged in.
+07-Mar-24 22:25:41 - [INFO] - 200 - Custom success 200 response sent
+07-Mar-24 22:25:41 - [INFO] - 127.0.0.1 - - [07/Mar/2024 22:25:41] "POST /api/v1/auth/login HTTP/1.1" 200 -
+07-Mar-24 22:25:41 - [INFO] - 127.0.0.1 - - [07/Mar/2024 22:25:41] "OPTIONS /api/v1/admin/5b37040e6200edb3c7f409e994076872 HTTP/1.1" 200 -
+07-Mar-24 22:25:41 - [INFO] - Token is verified for the user: 5b37040e6200edb3c7f409e994076872
+07-Mar-24 22:25:41 - [INFO] - User role : admin : is verified for the user: 5b37040e6200edb3c7f409e994076872
+07-Mar-24 22:25:41 - [INFO] - File path is not valid: 
+07-Mar-24 22:25:41 - [INFO] - 200 - Custom success 200 response sent
+07-Mar-24 22:25:41 - [INFO] - 127.0.0.1 - - [07/Mar/2024 22:25:41] "GET /api/v1/admin/5b37040e6200edb3c7f409e994076872 HTTP/1.1" 200 -
+07-Mar-24 22:25:53 - [INFO] - 127.0.0.1 - - [07/Mar/2024 22:25:53] "OPTIONS /api/v1/ticket/all-tickets/5b37040e6200edb3c7f409e994076872?query=&filter_priority=&filter_status=resolved&sortby=votes&sortdir=desc&filter_tags= HTTP/1.1" 200 -
+07-Mar-24 22:25:53 - [INFO] - Token is verified for the user: 5b37040e6200edb3c7f409e994076872
+07-Mar-24 22:25:53 - [INFO] - User role : admin : is verified for the user: 5b37040e6200edb3c7f409e994076872
+07-Mar-24 22:25:53 - [INFO] - File path is not valid: d:\IITM_exam\IITM_Term_7\SE_Project\Tushar_Work\code\backend\databases\images\ticket_attachments\6bb94cef36a7d2e6b380d701737fdb7f_0daff43cb54ee3506caf5bbddba890af_0.jpeg
+07-Mar-24 22:25:53 - [INFO] - File path is not valid: d:\IITM_exam\IITM_Term_7\SE_Project\Tushar_Work\code\backend\databases\images\ticket_attachments\385c25764a975c117ddb43b2bbc6c6b3_0daff43cb54ee3506caf5bbddba890af_0.jpeg
+07-Mar-24 22:25:53 - [INFO] - File path is not valid: d:\IITM_exam\IITM_Term_7\SE_Project\Tushar_Work\code\backend\databases\images\ticket_attachments\385c25764a975c117ddb43b2bbc6c6b3_d0120e490fa9d6b446a1e638d5978e2b_0.png
+07-Mar-24 22:25:53 - [INFO] - File path is not valid: D:\IITM_exam\IITM_Term_7\SE_Project\Tushar_Work\code\backend\databases\images\ticket_attachments\9a3a5b8f749cc3680f78b5ca64a8ca14_d0120e490fa9d6b446a1e638d5978e2b_0.jpeg
+07-Mar-24 22:25:53 - [INFO] - All tickets found : 4
+07-Mar-24 22:25:53 - [INFO] - 200 - Custom success 200 response sent
+07-Mar-24 22:25:53 - [INFO] - 127.0.0.1 - - [07/Mar/2024 22:25:53] "GET /api/v1/ticket/all-tickets/5b37040e6200edb3c7f409e994076872?query=&filter_priority=&filter_status=resolved&sortby=votes&sortdir=desc&filter_tags= HTTP/1.1" 200 -
