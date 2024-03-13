@@ -17,7 +17,12 @@ from application.views.user_utils import UserUtils
 from application.responses import *
 from application.models import Auth, Ticket, TicketVote
 from application.globals import *
+from application.database import db
 
+# -------------------- Imports for discourse integration project ----------------------
+import requests
+from application.models import Ots_discourse_userid_map
+from application.api_key import headers
 # --------------------  Code  --------------------
 
 
@@ -115,7 +120,65 @@ class StudentAPI(Resource):
         else:
             student_util.update_user_profile_data(user_id, form)
 
+    # ------------------ Start changes for discourse integration --------------------------- #
+            
+    @token_required
+    @users_required(users=["student"])
+    def delete(self, user_id):
+        " For deleting user on discourse as well as ots"
+        user = Auth.query.filter_by(user_id=user_id).first()
+        discourse_id=Ots_discourse_userid_map.query.with_entities(Ots_discourse_userid_map.discourse_user_id).filter_by(ots_user_id=user_id).first()[0]
+        try:
+            all_user_created_tickets=Ticket.query.filter_by(created_by=user_id).all()
+            # print(all_user_tickets)
+            for i in all_user_created_tickets:
+                i.created_by='abf02c0c383be0608d56da56b38b7d36'
+                try:
+                    db.session.add(i)
+                    db.session.commit()
+                except Exception as error:
+                    print(error)
+            
+            all_user_resolved_tickets=Ticket.query.filter_by(resolved_by=user_id).all()
+            # print(all_user_tickets)
+            for i in all_user_resolved_tickets:
+                i.resolved_by='abf02c0c383be0608d56da56b38b7d36'
+                try:
+                    db.session.add(i)
+                    db.session.commit()
+                except Exception as error:
+                    print(error)
+            
+            try:
+                db.session.delete(user)
+                db.session.commit()
+            except Exception as error:
+                print(error) 
 
+            del_user_url=f'http://localhost:3000/admin/users/{int(discourse_id)}.json'
+            del_user_data={
+                "delete_posts": False,
+                "block_email": False,
+                "block_urls": False,
+                "block_ip": False
+            }
+            try:
+                response = requests.delete(del_user_url,json=del_user_data,headers=headers,verify=False)
+                # print(response.json())
+            except Exception as error:
+                print(error)
+
+            ots_discourse_del=Ots_discourse_userid_map.query.filter_by(discourse_user_id=discourse_id).first()
+            try:
+                db.session.delete(ots_discourse_del)
+                db.session.commit()
+                return({'deletion status from all sources': 'True'})
+            except Exception as error:
+                print(error)
+            
+        except Exception as error:
+            print(error)
+
+    # ------------------ Start changes for discourse integration --------------------------- #
 student_api.add_resource(StudentAPI, "/<string:user_id>")  # path is /api/v1/student
-
 # --------------------  END  --------------------

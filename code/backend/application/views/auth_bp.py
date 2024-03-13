@@ -2,15 +2,25 @@
 # Tushar Supe : 21f1003637
 # Vaidehi Agarwal: 21f1003880
 # File Info: This file contains Login/Logout/Register API.
+# --------------------  Imports for the integration project  -------------------
+import requests
+api_key = '03c496ad7cec70da001b7385eb3f0b1d178fed0d2c0911965dfc42b29880d28b'
+api_username = '21f1006677'
+headers = {
+    'Api-Key': api_key,
+    'Api-Username': api_username,
+    'Content-Type': 'application/json',
+}
 
 # --------------------  Imports  --------------------
 
 import os
 from flask import Blueprint, request
+from flask import jsonify
 from flask_restful import Api, Resource
 from application.logger import logger
 from application.responses import *
-from application.models import Auth
+from application.models import Auth, Ots_discourse_userid_map
 from application.globals import TOKEN_VALIDITY, BACKEND_ROOT_PATH
 from application.database import db
 import time
@@ -312,6 +322,7 @@ class NewUsers(Resource):
     @token_required
     @admin_required
     def put(self, user_id):
+        print("###################### User getting verified ##############################")
         """
         Usage
         -----
@@ -328,6 +339,7 @@ class NewUsers(Resource):
         try:
             form = request.get_json()
             user_id = form.get("user_id", "")
+            print("################ user_id ################# ",user_id)
         except Exception as e:
             logger.error(f"NewUsers->put : Error occured while getting form data : {e}")
             raise InternalServerError
@@ -339,12 +351,57 @@ class NewUsers(Resource):
 
             # check if user exists
             user = Auth.query.filter_by(user_id=user_id).first()
+            print("################ User data retrieved from the database ################")
             if user:
                 # user exists , proceed to update
                 user = auth_utils.update_auth_table(details=details)
+                print("########### User verified ################")
+                user_name=str(user.first_name)+' '+str(user.last_name)
+                user_email=user.email
+                user_password=user.password
+                user_username=user.first_name
+                # print(user_email)
+                # print(type(user_email))
+                # print('email_demo',type('email_demo'))
+                # print('-----------------------')
+                user_data_for_discourse = {
+                    "name": user_name,
+                    "email": user_email,
+                    "password": 'Siddhesh@211201',
+                    "username": user_username,
+                    "active": True,
+                    "approved": True,
+                    "user_fields[1]": True,
+                    "external_ids": {}
+                }
+                print(user_data_for_discourse)
+
+                create_new_user_discourse_post_url = 'http://localhost:3000/users.json'
+                # print("######### All ok yet #########")
+                try:
+                    response = requests.post(create_new_user_discourse_post_url,json=user_data_for_discourse,headers=headers, verify=False)
+                    # print("########### post successful on discourse #############")
+                    # print(response.json())
+                    discourse_id=response.json()['user_id']
+                    # print(user_id,discourse_id)
+                    new_ots_disocurse_link=Ots_discourse_userid_map(ots_user_id=str(user_id),discourse_user_id=str(discourse_id))
+                    try:
+                        db.session.add(new_ots_disocurse_link)
+                        db.session.commit()
+                    except Exception as error:
+                        print(error)
+                except requests.exceptions.RequestException as e:
+                    print(f"Error: {e}")
+                # print(response)
+                    
+                
                 raise Success_200(status_msg="User verified and updated in database.")
+
+
             else:
                 raise NotFoundError(status_msg="User does not exists.")
+
+
 
     @token_required
     @admin_required
