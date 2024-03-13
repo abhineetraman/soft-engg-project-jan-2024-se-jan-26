@@ -105,5 +105,15 @@ class FAQAttachment(db.Model):
     def __repr__(self):
         return f"FAQAttachment object for: {self.faq_id}"
 
-
 # --------------------  END  --------------------
+# -------------------- Start integration with discourse ---------------- #
+    
+class Ots_discourse_userid_map(db.Model):
+    __tablename__='ots_discourse_userid_map'
+    ots_user_id=db.Column(db.String, nullable=False, primary_key=True)
+    discourse_user_id=db.Column(db.String, nullable=False, primary_key=True)
+
+    def __repr__(self):
+        return f"ots user object id : {self.ots_user_id} linked with discourse user id : {self.discourse_user_id}"
+
+# -------------------- End integration with discourse ------------------ #
