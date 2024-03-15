@@ -116,4 +116,11 @@ class Ots_discourse_userid_map(db.Model):
     def __repr__(self):
         return f"ots user object id : {self.ots_user_id} linked with discourse user id : {self.discourse_user_id}"
 
+class Ots_discourse_ticketid_map(db.Model):
+    __tablename__='ots_discourse_ticketid_map'
+    ots_ticket_id=db.Column(db.String, nullable=False, primary_key=True)
+    discourse_ticket_id=db.Column(db.String, nullable=False, primary_key=True)
+
+    def __repr__(self):
+        return f"ots user object id : {self.ots_ticket_id} linked with discourse user id : {self.discourse_ticket_id}"
 # -------------------- End integration with discourse ------------------ #
