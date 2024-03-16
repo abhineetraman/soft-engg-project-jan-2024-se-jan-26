@@ -20,6 +20,9 @@
               >{{ b.title }}</b-button
             >
           </div>
+          <b-button variant="light" @click="redirectToDiscourse">
+            <img src="@/assets/discourse_logo.png" alt="Discourse Logo" style="width: 150px; height: auto;"/>
+          </b-button>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -99,6 +102,9 @@ export default {
         this.$store.dispatch("set_state_after_logout", {});
         this.$router.push("/login");
       }
+    },
+    redirectToDiscourse() {
+      window.open("https://discourse.org/", "_blank");
     },
   },
   computed: {},
