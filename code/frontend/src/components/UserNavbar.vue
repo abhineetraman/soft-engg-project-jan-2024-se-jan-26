@@ -20,6 +20,7 @@
               >{{ b.title }}</b-button
             >
           </div>
+<!--          Discourse button -->
           <b-button variant="light" @click="redirectToDiscourse">
             <img src="@/assets/discourse_logo.png" alt="Discourse Logo" style="width: 150px; height: auto;"/>
           </b-button>
@@ -103,6 +104,7 @@ export default {
         this.$router.push("/login");
       }
     },
+    // redirect to Discourse
     redirectToDiscourse() {
       window.open("https://discourse.org/", "_blank");
     },
