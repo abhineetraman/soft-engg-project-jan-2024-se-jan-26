@@ -16,6 +16,7 @@ from application.views.support_bp import support_bp
 from application.views.admin_bp import admin_bp
 from application.views.faq_bp import faq_bp
 from application.views.ticket_bp import ticket_bp
+from application.views.webhook import webhook_blueprint
 from flask_cors import CORS
 
 
@@ -41,6 +42,7 @@ def create_app(env_type="dev"):
     app.register_blueprint(admin_bp, url_prefix=f"/api/{API_VERSION}/admin")
     app.register_blueprint(ticket_bp, url_prefix=f"/api/{API_VERSION}/ticket")
     app.register_blueprint(faq_bp, url_prefix=f"/api/{API_VERSION}/faq")
+    app.register_blueprint(webhook_blueprint, url_prefix=f"/api/{API_VERSION}/webhook", strict_slashes=False)
 
     app.app_context().push()
     db.create_all()
