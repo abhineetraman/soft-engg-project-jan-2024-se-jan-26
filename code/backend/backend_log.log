@@ -5783,3 +5783,21 @@
 16-Mar-24 02:20:34 - [INFO] - File path is not valid: 
 16-Mar-24 02:20:34 - [INFO] - 200 - Custom success 200 response sent
 16-Mar-24 02:20:34 - [INFO] - 127.0.0.1 - - [16/Mar/2024 02:20:34] "GET /api/v1/student/73a4e93df30151cba43793f041c79089 HTTP/1.1" 200 -
+18-Mar-24 20:35:34 - [INFO] - Development environment configured.
+18-Mar-24 20:35:34 - [INFO] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+18-Mar-24 20:35:34 - [INFO] - [33mPress CTRL+C to quit[0m
+18-Mar-24 20:35:34 - [INFO] -  * Restarting with stat
+18-Mar-24 20:35:36 - [INFO] - Development environment configured.
+18-Mar-24 20:35:36 - [WARNING] -  * Debugger is active!
+18-Mar-24 20:35:36 - [INFO] -  * Debugger PIN: 118-854-908
+18-Mar-24 20:36:07 - [INFO] - 127.0.0.1 - - [18/Mar/2024 20:36:07] "OPTIONS /api/v1/auth/login HTTP/1.1" 200 -
+18-Mar-24 20:36:07 - [INFO] - User logged in.
+18-Mar-24 20:36:07 - [INFO] - 200 - Custom success 200 response sent
+18-Mar-24 20:36:07 - [INFO] - 127.0.0.1 - - [18/Mar/2024 20:36:07] "POST /api/v1/auth/login HTTP/1.1" 200 -
+18-Mar-24 20:36:07 - [INFO] - 127.0.0.1 - - [18/Mar/2024 20:36:07] "OPTIONS /api/v1/admin/5fdff2e941fb6f67f5980b2e2bf6beb7 HTTP/1.1" 200 -
+18-Mar-24 20:36:07 - [INFO] - Token is verified for the user: 5fdff2e941fb6f67f5980b2e2bf6beb7
+18-Mar-24 20:36:07 - [INFO] - User role : admin : is verified for the user: 5fdff2e941fb6f67f5980b2e2bf6beb7
+18-Mar-24 20:36:07 - [INFO] - File path is not valid: 
+18-Mar-24 20:36:07 - [INFO] - 200 - Custom success 200 response sent
+18-Mar-24 20:36:07 - [INFO] - 127.0.0.1 - - [18/Mar/2024 20:36:07] "GET /api/v1/admin/5fdff2e941fb6f67f5980b2e2bf6beb7 HTTP/1.1" 200 -

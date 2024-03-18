@@ -106,7 +106,7 @@ export default {
     },
     // redirect to Discourse
     redirectToDiscourse() {
-      window.open("https://discourse.org/", "_blank");
+      window.open("http://localhost:4200/", "_blank");
     },
   },
   computed: {},
