@@ -2,6 +2,9 @@
 # Tushar Supe : 21f1003637
 # Vaidehi Agarwal: 21f1003880
 # File Info: This is Ticket Blueprint file.
+# -------------------- Imports for discourse project -----------------
+import requests
+from application.api_key import api_key_all_user
 
 # --------------------  Imports  --------------------
 
@@ -352,10 +355,42 @@ class TicketAPI(Resource):
             details["created_by"] = user_id
             details["created_on"] = int(time.time())
             ticket = Ticket(**details)
+            
+            ticket_posting_data={
+              "title": ticket.title,
+              "raw": ticket.description,
+            #   "topic_id": str(ticket_id),
+              "category": str(4),
+              # "archetype": "private_message",
+              # "created_at": "string",
+              # "reply_to_post_number": 0,
+              # "embed_url": "string",
+              # "external_id": "string"
+            }
+            print(ticket_posting_data)
+            headers_user = {
+                'Api-Key': api_key_all_user,
+                'Api-Username': user.first_name,
+                'Content-Type': 'application/json',
+            }
 
             try:
                 db.session.add(ticket)
                 db.session.commit()
+                print('added ticket to ots database')
+                post_ticket_url='http://localhost:3000/posts.json'
+                print('posting on discourse')
+                response=requests.post(post_ticket_url,json=ticket_posting_data,verify=False,headers=headers_user)
+                print(response.json())
+                print(response.json()['id'])
+                print(ticket.ticket_id)
+                new_ots_disocurse_ticketid_link=Ots_discourse_ticketid_map(ots_ticket_id=str(ticket.ticket_id),discourse_ticket_id=str(response.json()['id']))
+                try:
+                    db.session.add(new_ots_disocurse_ticketid_link)
+                    db.session.commit()
+                except Exception as error:
+                    print(error)
+
             except Exception as e:
                 logger.error(
                     f"TicketAPI->post : Error occured while creating a new ticket : {e}"
@@ -486,13 +521,33 @@ class TicketAPI(Resource):
                         )
                     else:
                         # ticket upvoted
-                        ticket_vote = TicketVote(ticket_id=ticket_id, user_id=user_id)
-                        db.session.add(ticket_vote)
+                        #ticket_vote = TicketVote(ticket_id=ticket_id, user_id=user_id)
+                        # db.session.add(ticket_vote)
 
-                        ticket.votes = ticket.votes + 1
-                        db.session.add(ticket)
+                        # ticket.votes = ticket.votes + 1
+                        # db.session.add(ticket)
 
-                        db.session.commit()
+                        # db.session.commit()
+
+                        discourse_ticket_id=Ots_discourse_ticketid_map.query.with_entities(Ots_discourse_ticketid_map.discourse_ticket_id).filter_by(ots_ticket_id=ticket_id).first()[0]
+                        discourse_user_name=Auth.query.with_entities(Auth.first_name).filter_by(user_id=user_id).first()[0]
+                        print(discourse_ticket_id)
+                        print(discourse_user_name)
+                        headers_user = {
+                            'Api-Key': api_key_all_user,
+                            'Api-Username': discourse_user_name,
+                            'Content-Type': 'application/json',
+                        }
+                        ticket_liking_data={
+                            "id": str(discourse_ticket_id),
+                            "post_action_type_id": str(2),
+                            "flag_topic": False
+                        }
+                        post_like_ticket_url='http://localhost:3000/post_actions.json'
+                        response=requests.post(post_like_ticket_url,json=ticket_liking_data,headers=headers_user,verify=False)
+                        print('done')
+                        print(response.json())
+
                         raise Success_200(status_msg="Successfully upvoted ticket.")
 
             if role == "support":
@@ -507,6 +562,36 @@ class TicketAPI(Resource):
 
                     db.session.add(ticket)
                     db.session.commit()
+
+                    Replying on the discourse
+                    discourse_ticket_id=Ots_discourse_ticketid_map.query.with_entities(Ots_discourse_ticketid_map.discourse_ticket_id).filter_by(ots_ticket_id=ticket_id).first()[0]
+                    discourse_user_name= Auth.query.with_entities(Auth.first_name).filter_by(user_id=user_id).first()[0]
+                    print(discourse_ticket_id)
+                    print(discourse_user_name)
+                    headers_user = {
+                        'Api-Key': api_key_all_user,
+                        'Api-Username': discourse_user_name,
+                        'Content-Type': 'application/json',
+                    }
+
+                    ticket_reply_data={
+                        "raw" : sol,
+                        "topic_id":  str(discourse_ticket_id),
+                    }
+                    ticket_reply_data_url='http://localhost:3000/posts.json'
+                    response=requests.post(ticket_reply_data_url,json=ticket_reply_data,headers=headers_user,verify=False)
+                    print('done')
+                    print(response.json())
+                    
+                    print(response.json()['id'])
+                    print(ticket.ticket_id)
+                    new_ots_disocurse_ticketid_link=Ots_discourse_ticketid_map(ots_ticket_id=str(ticket.ticket_id),discourse_ticket_id=str(response.json()['id']))
+                    try:
+                        db.session.add(new_ots_disocurse_ticketid_link)
+                        db.session.commit()
+                    except Exception as error:
+                        print(error)
+
 
                     # send notification to user who created as well as voted
                     try:
@@ -599,6 +684,33 @@ class TicketAPI(Resource):
                     db.session.delete(ticket)
                     db.session.commit()
                     raise Success_200(status_msg="Ticket deleted successfully")
+
+                    # ------- Discourse Integration for deleting the ticket ------ 
+
+                    discourse_ticket_id=Ots_discourse_ticketid_map.query.with_entities(Ots_discourse_ticketid_map.discourse_ticket_id).filter_by(ots_ticket_id=ticket_id).first()[0]
+                    discourse_user_name= Auth.query.with_entities(Auth.first_name).filter_by(user_id=user_id).first()[0]
+                    print(discourse_ticket_id)
+                    print(discourse_user_name)
+                    headers_user = {
+                        'Api-Key': api_key_all_user,
+                        'Api-Username': discourse_user_name,
+                        'Content-Type': 'application/json',
+                    }
+
+                    ticket_delete_url='http://localhost:3000/posts/' + discourse_ticket_id  + '.json'
+                    response=requests.post(ticket_reply_data_url,json=ticket_reply_data,headers=headers_user,verify=False)
+                    print('done')
+                    print(response.json())
+                    
+                    new_ots_disocurse_ticketid_link=Ots_discourse_ticketid_map(discourse_ticket_id=discourse_ticket_id).first()
+                    try:
+                        db.session.delete(new_ots_disocurse_ticketid_link)
+                        db.session.commit()
+                    except Exception as error:
+                        print(error)
+                    
+
+
                 else:
                     raise PermissionDenied(
                         status_msg="Only a user who created a ticket can delete it."

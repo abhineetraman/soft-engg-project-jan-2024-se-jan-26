@@ -22,7 +22,7 @@ from application.database import db
 # -------------------- Imports for discourse integration project ----------------------
 import requests
 from application.models import Ots_discourse_userid_map
-from application.api_key import headers
+from application.api_key import headers, headers_user
 # --------------------  Code  --------------------
 
 
@@ -121,6 +121,23 @@ class StudentAPI(Resource):
             student_util.update_user_profile_data(user_id, form)
 
     # ------------------ Start changes for discourse integration --------------------------- #
+
+        
+        headers_user = {
+            'Api-Key': api_key_all_user,
+            'Api-Username': discourse_user_name,
+            'Content-Type': 'application/json',
+        }
+
+        update_user_data={
+            "name" : form['first_name'] + form['last_name'],
+            "external_ids":  {},
+        }
+        update_user_url='http://localhost:3000/u/' + user_id + '.json'
+        response=requests.post(update_user_url,json=update_user_data,headers=headers_user,verify=False)
+        print('done')
+        print(response.json())
+        
             
     @token_required
     @users_required(users=["student"])
