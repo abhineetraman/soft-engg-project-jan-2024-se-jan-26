@@ -4,7 +4,7 @@
 # File Info: This is Ticket Blueprint file.
 # -------------------- Imports for discourse project -----------------
 import requests
-from application.api_key import api_key_all_user
+from application.api_key import api_key_all_user,headers
 
 # --------------------  Imports  --------------------
 
@@ -712,7 +712,23 @@ class AllTicketsAPI(Resource):
             all_tickets.append(tick)
 
         all_tickets = ticket_utils.tickets_filter_sort(all_tickets, args)
-
+        
+        
+        # print(all_tickets)
+        def match_string_to_raw(string,raw):
+            if (string.lower() in raw.lower()):
+                return True
+            else:
+                False
+        get_post='http://localhost:3000/posts.json'
+        response = requests.get(get_post, headers=headers, verify=False)
+        response_list=response.json()['latest_posts']
+        data_disocurse=[]
+        for i in response_list:
+            if(match_string_to_raw(args['query'],i['raw'])):
+                data_disocurse.append({'username':i['username'],'description':i['raw'],'title':i['topic_title']}) 
+        # print(data_disocurse)
+        print(data_disocurse)
         logger.info(f"All tickets found : {len(all_tickets)}")
 
         return success_200_custom(data=all_tickets)
