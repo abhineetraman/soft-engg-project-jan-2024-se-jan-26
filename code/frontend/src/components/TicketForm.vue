@@ -46,9 +46,9 @@
         ></b-form-radio-group>
         <b-form-select v-if="form.priority === 'high'" v-model="selectedOption">
           <option value="">Select an option</option>
-          <option value="portal_not_working">Portal Not Working</option>
-          <option value="doubt_in_quiz">Doubt in Quiz or End Term</option>
-          <option value="fees_related_issue">Fees Related Issue</option>
+          <option value="Portal Down">Portal Down</option>
+          <option value="Doubt in Quiz">Doubt in Quiz or End Term</option>
+          <option value="Fees related isuue">Fees Related Issue</option>
         </b-form-select>
       </b-form-group>
 
@@ -112,7 +112,6 @@ export default {
   methods: {
     onFileUpload(value) {
       this.form.attachments.splice(0, this.form.attachments.length, ...value);
-      for (let i = 0; i < this.form.attachments.length; i++) {}
     },
     onSubmit(event) {
     if (event && event.preventDefault) {
@@ -164,15 +163,19 @@ export default {
 
       // Send request to webhook API if priority is high
       if (this.form.priority === 'high' && this.selectedOption) {
-        fetch('http://127.0.0.1:5000/api/v1/webhook', {
+        const payload = {
+        sender: this.$store.getters.get_user_name,
+        post: this.selectedOption,
+
+        };
+        console.log("check1:", payload);
+        fetch('http://127.0.0.1:5000/api/v1/webhook',  {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            priority: this.form.priority,
-            selectedOption: this.selectedOption,
-          }),
+          body: JSON.stringify(payload),
+        
         })
         .then((response) => {
           if (!response.ok) {
@@ -217,5 +220,3 @@ export default {
 </script>
 
 <style></style>
-
-#127.0.0.1:5000/api/v1/webhook
