@@ -368,7 +368,7 @@ tags:
 - name: FAQ
   description: Get all FAQs or create a new FAQ.
 paths:
-  /webhook:
+  /api/v1/webhook:
     post:
       tags:
         - Webhook
