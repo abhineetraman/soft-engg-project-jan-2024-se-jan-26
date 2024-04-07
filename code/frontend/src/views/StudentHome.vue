@@ -29,11 +29,30 @@
           <InfoCard title="tickets resolved" :value="n_tickets_resolved.toString()"></InfoCard>
           <InfoCard title="tickets pending" :value="n_tickets_pending.toString()"></InfoCard>
           <InfoCard title="tickets upvoted" :value="n_tickets_upvoted.toString()"></InfoCard>
+          <!--      Delete Student button-->
+          <button class="btn btn-danger btn-block delete_student rounded-0" @click="showDeleteStudentModal">
+            Delete Student
+          </button>
         </b-col>
       </b-row>
     </b-container>
 
     <br />
+    <b-modal
+      :id="delete_student_modal_id"
+      @cancel="$bvModal.hide(delete_student_modal_id)"
+      size="l"
+      scrollable
+    >
+      <template>
+        <h3>Do You Want To DELETE Your Account?</h3>
+        <h5>You won't able to recover it. It will delete your Discourse account also.</h5>
+      </template>
+      <template #modal-footer="{ cancel }">
+        <b-button size="sm" variant="danger" @click="deleteStudent()"> Yes, Delete My Account </b-button>
+        <b-button size="sm" variant="outline-danger" class="btn-outline-danger" @click="cancel()"> Cancel </b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -48,6 +67,7 @@ export default {
   components: { UserNavbar, TicketCard, InfoCard },
   data() {
     return {
+      delete_student_modal_id: "delete_student_modal",
       n_tickets_created: 0,
       n_tickets_resolved: 0,
       n_tickets_pending: 0,
@@ -126,9 +146,50 @@ export default {
       });
   },
   mounted() {},
-  methods: {},
+  methods: {
+    showDeleteStudentModal() {
+      this.$bvModal.show(this.delete_student_modal_id);
+    },
+    deleteStudent() {
+      fetch(common.STUDENT_API  + `/${this.user_id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          web_token: this.$store.getters.get_web_token,
+          user_id: this.user_id,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data)
+          if (data['deletion status from all sources'] === "True") {
+            document.cookie = 'session_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax;'
+            window.location.href = '/login';
+            this.flashMessage.success({
+              message: 'Student deleted successfully',
+            });
+          }
+          if (data.category == "error") {
+            this.flashMessage.error({
+              message: 'Failed to delete student',
+            });
+          }
+        })
+        .catch((error) => {
+          this.$log.error(`Error : ${error}`);
+          this.flashMessage.error({
+            message: "Internal Server Error",
+          });
+        });
+    },
+  },
   computed: {},
 };
 </script>
 
-<style></style>
+<style>
+.delete_student {
+  box-shadow: 2px 4px 5px 5px #dbdada;
+  margin: auto;
+}
+</style>

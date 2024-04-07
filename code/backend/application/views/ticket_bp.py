@@ -563,7 +563,7 @@ class TicketAPI(Resource):
                     db.session.add(ticket)
                     db.session.commit()
 
-                    Replying on the discourse
+                    # Replying on the discourse
                     discourse_ticket_id=Ots_discourse_ticketid_map.query.with_entities(Ots_discourse_ticketid_map.discourse_ticket_id).filter_by(ots_ticket_id=ticket_id).first()[0]
                     discourse_user_name= Auth.query.with_entities(Auth.first_name).filter_by(user_id=user_id).first()[0]
                     print(discourse_ticket_id)
