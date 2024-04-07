@@ -1,25 +1,18 @@
 ---
 openapi: 3.0.0
 info:
-  title: Online Support Ticket System API with Discourse Integration - Group 26
+  title: Online Support Ticket System API - Group 14
   description: |-
     <h3>Software Engineering Project: Milestone 4</h3>
     <h3>Task: API Endpoints Documentation</h3>
     <h3>Course: BSCSS3001 - Software Engineering</h3>
-    <h3>Group: 26</h3>
+    <h3>Group: 14</h3>
     <h3>Members:
-    <ul><li>Abhineet Raman (21F1005523)</li>
-    <li>Siddhesh Sanghvi (21F1006677)</li>
-    <li>Natasha Mittal (21F1005823)</li>
-    <li>Chandresh Sutariya (21F3001415)</li>
-    <li>Gargi (21F1002454)</li>
-    <li>Vaibhav Mishra (21F1002288)</li>
-    <li>Richik Majumdar (21F1000460) </li></ul>
+    <ul><li>Tushar Supe (21F1003637)</li>
+    <li>Vaidehi Agarwal (21F1003880)</li></ul>
     </h3>
     <h3>Program: Online BSc in Programming and Data Science</h3>
     <h3>Institute: Indian Institute of Technology, Madras</h3>
-    
-    <h1> <b>This is the edited API of OTS app. Integration of Discourse is done in the same API Call. User(Edit, delete, Verify, Add, get), Post(Create, delete, reply, Like), Search(api), Site Report Generation,(site.json). Also Webhook is integrated as a new API Call.</b></h1>
     </br></br>
 
 
@@ -375,10 +368,10 @@ tags:
 - name: FAQ
   description: Get all FAQs or create a new FAQ.
 paths:
-  /webhook:
+  /api/v1/webhook:
     post:
       tags:
-      - Webhook
+        - Webhook
       summary: Send a message to a Google Chat room with username and message
       requestBody:
         required: true
@@ -387,9 +380,14 @@ paths:
             schema:
               type: object
               properties:
-                text:
+                sender:
+                  type: string
+                  example: John Doe
+                  description: The sender's name
+                post:
                   type: string
                   example: Hello from Flask-RESTful!
+                  description: The content of the message
       responses:
         '200':
           description: Message sent successfully
@@ -397,6 +395,8 @@ paths:
           description: Bad request - Message text is required
         '500':
           description: Internal server error - Failed to send message
+
+
   /api/v1/auth/login:
     post:
       tags:
@@ -825,7 +825,7 @@ paths:
     get:
       tags:
       - AllTickets
-      summary: Retrieve all tickets for searching along with keywords from discourse.
+      summary: Retrieve all tickets for searching.
       operationId: getAllTickets
       responses:
         "200":
@@ -969,7 +969,7 @@ paths:
     put:
       tags:
       - Student
-      summary: Update student profile data along with names on discourse.
+      summary: Update student profile data.
       operationId: updateStudent
       parameters:
       - name: user_id
