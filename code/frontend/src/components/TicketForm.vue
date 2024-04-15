@@ -188,7 +188,7 @@ export default {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(payload),
-        
+
         })
         .then((response) => {
           if (!response.ok) {
@@ -226,7 +226,7 @@ export default {
   },
   computed: {
     check_title() {
-      return this.form.title.length > 5;
+      return this.form.title.length > 15;
     },
     check_description() {
       return this.form.description.length >= 5 ? true : false;
